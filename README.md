@@ -1,0 +1,1 @@
+The agent filed a confident, fabricated ticket with no attacker involved

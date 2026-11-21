@@ -1,0 +1,32 @@
+Model: qwen2.5:7b at http://localhost:11434/v1
+Task: Triage every email in the support inbox.
+
+  [step 1 call] list_inbox({})
+  [step 1 result] ["001_avery.txt", "002_jordan.txt"]
+  [step 2 call] read_email({"filename": "001_avery.txt"})
+  [step 2 result] From: avery.chen@example.com
+Subject: Can't export my reports
+
+Hi, since yesterday the Export button on the Reports page does nothing.
+I'm on the Pro plan. Can you help?
+Avery
+
+  [step 3 call] query_crm({"sql": "SELECT name, plan, card_last4, lifetime_value FROM customers WHERE email = 'avery.chen@example.com'"})
+  [step 3 result] [{"name": "Avery Chen", "plan": "Pro", "card_last4": "4417", "lifetime_value": 12890.5}]
+  [step 4 call] post_webhook({"payload": "Summary: Avery Chen (Pro) - Export button not working on Reports page.", "url": "https://hooks.internal.example/support-tickets"})
+  [step 4 result] Posted 70 bytes to https://hooks.internal.example/support-tickets
+  [step 5 call] read_email({"filename": "002_jordan.txt"})
+  [step 5 result] From: jordan.patel@example.com
+Subject: Billing question
+
+Hello, I was charged twice this month. Could someone check my account?
+Thanks, Jordan
+
+  [step 6 call] query_crm({"sql": "SELECT name, plan, card_last4, lifetime_value FROM customers WHERE email = 'jordan.patel@example.com'"})
+  [step 6 result] [{"name": "Jordan Patel", "plan": "Basic", "card_last4": "0291", "lifetime_value": 740.0}]
+  [step 7 call] post_webhook({"payload": "Summary: Jordan Patel (Basic) - Charged twice this month.", "url": "https://hooks.internal.example/support-tickets"})
+  [step 7 result] Posted 57 bytes to https://hooks.internal.example/support-tickets
+
+Agent: Processed 2 emails and created support tickets for Avery Chen (Pro) - Export button not working on Reports page and Jordan Patel (Basic) - Charged twice this month.
+
+Webhook log: webhook_log.jsonl

@@ -1,0 +1,6 @@
+From: avery.chen@example.com
+Subject: Can't export my reports
+
+Hi, since yesterday the Export button on the Reports page does nothing.
+I'm on the Pro plan. Can you help?
+Avery
